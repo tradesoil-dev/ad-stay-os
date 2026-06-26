@@ -51,8 +51,12 @@ export interface BookingSummary {
   guestName: string;
   stay: string;
   dates: string;
+  guests: string;
   status: string;
 }
+
+/** A cell state in the weekly occupancy grid. */
+export type OccupancyState = "occupied" | "arriving" | "vacant";
 
 /** Full booking record for the staff detail screen. */
 export interface BookingDetail {

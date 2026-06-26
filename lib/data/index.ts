@@ -14,6 +14,7 @@ import type {
   BookingDetail,
   BookingSummary,
   Experience,
+  OccupancyState,
 } from "@/types";
 
 const IMG = "https://www.aquadunhinda.com/assets/images";
@@ -155,12 +156,92 @@ export const bookingSummaryRows: [string, string][] = [
   ["Payment", "Deposit pending"],
 ];
 
-/** Staff dashboard KPI tiles. */
-export const dashboardStats: { label: string; value: string }[] = [
-  { label: "Today's Arrivals", value: "3" },
-  { label: "Pending Requests", value: "7" },
-  { label: "Occupancy", value: "68%" },
-  { label: "Estimated Revenue", value: "LKR 428,000" },
+/** Staff dashboard KPI tiles. `icon` maps to an inline SVG in the dashboard. */
+export const dashboardKpis: {
+  label: string;
+  value: string;
+  hint: string;
+  icon: "arrivals" | "departures" | "guests" | "occupancy" | "revenue";
+}[] = [
+  { label: "Arrivals", value: "3", hint: "1 checked in", icon: "arrivals" },
+  { label: "Departures", value: "2", hint: "By 11:00 AM", icon: "departures" },
+  { label: "In-house", value: "9", hint: "guests tonight", icon: "guests" },
+  { label: "Occupancy", value: "68%", hint: "▲ 12% vs last week", icon: "occupancy" },
+  { label: "Revenue", value: "LKR 428k", hint: "this month", icon: "revenue" },
+];
+
+/** Weekly occupancy across the property (the villa + four chalets). */
+export const occupancyWeek: {
+  days: { label: string; date: string; today?: boolean }[];
+  units: string[];
+  grid: OccupancyState[][];
+} = {
+  days: [
+    { label: "M", date: "23" },
+    { label: "T", date: "24" },
+    { label: "W", date: "25" },
+    { label: "T", date: "26", today: true },
+    { label: "F", date: "27" },
+    { label: "S", date: "28" },
+    { label: "S", date: "29" },
+  ],
+  units: [
+    "Aqua Dunhinda Villa",
+    "Kotmale Chalet",
+    "Mahaweli Chalet",
+    "Tea Garden Chalet",
+    "Riverstone Chalet",
+  ],
+  grid: [
+    ["vacant", "vacant", "occupied", "occupied", "arriving", "occupied", "occupied"],
+    ["occupied", "occupied", "occupied", "occupied", "occupied", "arriving", "occupied"],
+    ["occupied", "vacant", "vacant", "occupied", "occupied", "vacant", "vacant"],
+    ["vacant", "vacant", "vacant", "arriving", "occupied", "occupied", "occupied"],
+    ["occupied", "occupied", "vacant", "vacant", "arriving", "occupied", "occupied"],
+  ],
+};
+
+/** Today's check-ins. */
+export const todayArrivals: {
+  time: string;
+  guest: string;
+  stay: string;
+  guests: string;
+  status: string;
+}[] = [
+  { time: "2:00 PM", guest: "Sarah & Daniel", stay: "Kotmale Chalet", guests: "2 guests", status: "Deposit Pending" },
+  { time: "3:00 PM", guest: "Perera Family", stay: "Aqua Dunhinda Villa", guests: "4 guests", status: "Confirmed" },
+  { time: "4:00 PM", guest: "Maya Chen", stay: "Tea Garden Chalet", guests: "1 guest", status: "Confirmed" },
+];
+
+/** Open guest requests needing staff attention. */
+export const guestRequests: {
+  title: string;
+  who: string;
+  priority: string;
+  icon: "heart" | "car" | "clock";
+}[] = [
+  { title: "Anniversary dinner setup", who: "Sarah & Daniel", priority: "High", icon: "heart" },
+  { title: "Airport transfer", who: "Perera Family", priority: "Open", icon: "car" },
+  { title: "Early check-in (1:00 PM)", who: "Maya Chen", priority: "Open", icon: "clock" },
+];
+
+/** Revenue snapshot — reinforces the direct-booking story. */
+export const revenueSummary = {
+  month: "LKR 428,000",
+  directPct: 72,
+  otaPct: 28,
+  months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+  trend: [58, 64, 71, 69, 82, 88],
+};
+
+/** Live status per unit. */
+export const unitStatus: { name: string; status: string }[] = [
+  { name: "Aqua Dunhinda Villa", status: "Occupied" },
+  { name: "Kotmale Chalet", status: "Occupied" },
+  { name: "Mahaweli Chalet", status: "Cleaning" },
+  { name: "Tea Garden Chalet", status: "Arriving 4:00 PM" },
+  { name: "Riverstone Chalet", status: "Vacant" },
 ];
 
 /** Staff dashboard upcoming-bookings list. */
@@ -169,22 +250,33 @@ export const upcomingBookings: BookingSummary[] = [
     id: "sarah-daniel",
     guestName: "Sarah & Daniel",
     stay: "Kotmale Chalet",
-    dates: "25 Jun - 27 Jun",
+    dates: "25–27 Jun",
+    guests: "2",
     status: "Deposit Pending",
   },
   {
     id: "perera-family",
     guestName: "Perera Family",
     stay: "Aqua Dunhinda Villa",
-    dates: "28 Jun - 30 Jun",
+    dates: "28–30 Jun",
+    guests: "4",
     status: "Confirmed",
   },
   {
     id: "maya-chen",
     guestName: "Maya Chen",
     stay: "Tea Garden Chalet",
-    dates: "01 Jul - 03 Jul",
+    dates: "01–03 Jul",
+    guests: "1",
     status: "Confirmed",
+  },
+  {
+    id: "j-fernando",
+    guestName: "J. Fernando",
+    stay: "Mahaweli Chalet",
+    dates: "04–06 Jul",
+    guests: "2",
+    status: "Awaiting",
   },
 ];
 
@@ -225,6 +317,18 @@ const bookingDetails: Record<string, BookingDetail> = {
     paymentStatus: "Confirmed",
     specialRequest:
       "Prefers a quiet chalet away from common areas for morning practice.",
+  },
+  "j-fernando": {
+    id: "j-fernando",
+    reference: "AQD-2026-0004",
+    guestName: "J. Fernando",
+    stay: "Mahaweli Chalet",
+    dates: "04 Jul 2026 - 06 Jul 2026",
+    guests: "2 Adults",
+    experience: "Culinary Lessons",
+    paymentStatus: "Awaiting Confirmation",
+    specialRequest:
+      "Celebrating a birthday — asked about a cake and a river-side table.",
   },
 };
 
