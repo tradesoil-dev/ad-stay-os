@@ -5,7 +5,7 @@ import { tenant } from "@/lib/tenant";
 export default function Navbar() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-ink/70 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
         <Link href="/" aria-label={tenant.hotelName}>
           <Wordmark />
         </Link>
@@ -36,7 +36,7 @@ export default function Navbar() {
           </a>
           <Link
             href="/booking"
-            className="whitespace-nowrap rounded-full bg-gold px-4 py-2 text-xs font-semibold text-ink transition hover:bg-white sm:px-5 sm:py-3 sm:text-sm"
+            className="whitespace-nowrap rounded-full bg-gold px-3 py-1.5 text-[11px] font-semibold text-ink transition hover:bg-white sm:px-5 sm:py-3 sm:text-sm"
           >
             Plan My Stay
           </Link>

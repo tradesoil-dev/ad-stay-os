@@ -92,7 +92,7 @@ function Glyph({ children }: { children: ReactNode }) {
 
 export default function DashboardPage() {
   return (
-    <section className="px-6 pb-24 pt-32">
+    <section className="px-6 pb-24 pt-24 sm:pt-32">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
