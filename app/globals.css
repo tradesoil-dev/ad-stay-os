@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * StayOS design tokens.
+ *
+ * These are the single source of truth for the product palette. Components must
+ * use the semantic utilities these generate (bg-primary, text-ink, border-line,
+ * etc.) instead of hardcoded hex values, so the same codebase can be re-themed
+ * per hotel by overriding these variables.
+ *
+ * Bespoke gradients (hero, room cards) intentionally keep their inline stops —
+ * they are one-off art, not part of the reusable token set.
+ */
+@theme {
+  --color-primary: #2f5d50; /* forest green — primary actions, accents */
+  --color-primary-dark: #203f34; /* primary hover */
+  --color-ink: #14231d; /* near-black green — headings, strong text */
+  --color-ink-deep: #102019; /* deepest green — hero background */
+  --color-muted: #5f6f5c; /* body copy */
+  --color-subtle: #6f7b70; /* small labels */
+  --color-line: #e8e2d6; /* sand borders */
+  --color-sand: #f6f2e8; /* primary warm surface */
+  --color-sand-light: #f8f5ef; /* alternate warm surface */
+  --color-gold: #cdbb8b; /* accent / CTA on dark */
+  --color-gold-deep: #c0a56b; /* deeper gold accent (numerals) */
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Large serif display headings read as more "couture" with slightly negative
+ * tracking. Scoped to serif headings so body copy is untouched. */
+h1.font-serif,
+h2.font-serif {
+  letter-spacing: -0.015em;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Consistent, on-brand keyboard focus ring. Links/buttons get it globally;
+ * form fields set their own focus styles (they clear the native outline). */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 9999px;
 }
