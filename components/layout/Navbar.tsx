@@ -25,18 +25,18 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <a
             href={tenant.bookingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden rounded-full border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-ink sm:inline-flex"
+            className="hidden whitespace-nowrap rounded-full border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-ink sm:inline-flex"
           >
             Book Now
           </a>
           <Link
             href="/booking"
-            className="rounded-full bg-gold px-5 py-3 text-sm font-semibold text-ink transition hover:bg-white"
+            className="whitespace-nowrap rounded-full bg-gold px-4 py-2 text-xs font-semibold text-ink transition hover:bg-white sm:px-5 sm:py-3 sm:text-sm"
           >
             Plan My Stay
           </Link>

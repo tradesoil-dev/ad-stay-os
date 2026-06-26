@@ -25,7 +25,7 @@ export default function StaffNav() {
 
         <Link
           href="/"
-          className="rounded-full border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-ink"
+          className="shrink-0 whitespace-nowrap rounded-full border border-white/30 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white hover:text-ink sm:px-5 sm:py-3 sm:text-sm"
         >
           View Guest Site
         </Link>
