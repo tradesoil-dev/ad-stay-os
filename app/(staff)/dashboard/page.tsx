@@ -21,8 +21,6 @@ const today = new Intl.DateTimeFormat("en-GB", {
 // Shared column template so the bookings header and rows stay perfectly aligned.
 // Full literal class strings (incl. the `md:` variant) so Tailwind emits them.
 const COLS = "grid-cols-[minmax(0,1.6fr)_minmax(0,1.4fr)_minmax(0,1fr)_3rem_8rem]";
-const COLS_MD =
-  "md:grid-cols-[minmax(0,1.6fr)_minmax(0,1.4fr)_minmax(0,1fr)_3rem_8rem]";
 
 const kpiIcons: Record<string, ReactNode> = {
   arrivals: (
@@ -95,15 +93,15 @@ export default function DashboardPage() {
     <section className="px-6 pb-24 pt-24 sm:pt-32">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4 sm:mb-8">
           <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-primary">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary sm:text-sm sm:tracking-[0.35em]">
               Operations
             </p>
-            <h1 className="mt-3 text-5xl font-serif text-ink">
+            <h1 className="mt-2 text-3xl font-serif text-ink sm:mt-3 sm:text-5xl">
               Good morning, Aqua Dunhinda
             </h1>
-            <p className="mt-3 text-muted">{today}</p>
+            <p className="mt-2 text-sm text-muted sm:mt-3 sm:text-base">{today}</p>
           </div>
 
           <div className="flex overflow-hidden rounded-full border border-line bg-white text-sm">
@@ -114,21 +112,23 @@ export default function DashboardPage() {
         </div>
 
         {/* KPI tiles */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
           {dashboardKpis.map((kpi) => (
             <div
               key={kpi.label}
-              className="rounded-[1.25rem] border border-line bg-white p-5 shadow-sm shadow-black/5"
+              className="rounded-[1.25rem] border border-line bg-white p-4 shadow-sm shadow-black/5 sm:p-5"
             >
               <div className="flex items-center gap-2 text-subtle">
                 <span className="text-primary">
                   <Glyph>{kpiIcons[kpi.icon]}</Glyph>
                 </span>
-                <span className="text-xs uppercase tracking-[0.14em]">
+                <span className="text-[11px] uppercase tracking-[0.12em] sm:text-xs sm:tracking-[0.14em]">
                   {kpi.label}
                 </span>
               </div>
-              <p className="mt-4 font-serif text-4xl text-ink">{kpi.value}</p>
+              <p className="mt-3 font-serif text-2xl text-ink sm:mt-4 sm:text-4xl">
+                {kpi.value}
+              </p>
               <p
                 className={`mt-1.5 text-xs ${
                   kpi.icon === "occupancy" ? "text-primary" : "text-muted"
@@ -177,19 +177,26 @@ export default function DashboardPage() {
             </p>
             <h2 className="mt-1 text-2xl font-serif text-ink">Arrivals</h2>
 
-            <div className="mt-6 space-y-4">
-              {todayArrivals.map((a) => (
-                <div key={a.guest} className="flex items-center gap-4">
-                  <p className="w-16 shrink-0 text-sm text-subtle">{a.time}</p>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-ink">{a.guest}</p>
-                    <p className="text-sm text-muted">
-                      {a.stay} · {a.guests}
-                    </p>
+            <div className="mt-6 overflow-x-auto">
+              <div className="min-w-[460px] space-y-4">
+                {todayArrivals.map((a) => (
+                  <div
+                    key={a.guest}
+                    className="grid grid-cols-[4rem_minmax(150px,1fr)_auto] items-center gap-4"
+                  >
+                    <p className="text-sm text-subtle">{a.time}</p>
+                    <div>
+                      <p className="whitespace-nowrap font-semibold text-ink">
+                        {a.guest}
+                      </p>
+                      <p className="whitespace-nowrap text-sm text-muted">
+                        {a.stay} · {a.guests}
+                      </p>
+                    </div>
+                    <StatusBadge status={a.status} />
                   </div>
-                  <StatusBadge status={a.status} />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
@@ -283,16 +290,18 @@ export default function DashboardPage() {
             </p>
             <h2 className="mt-1 text-2xl font-serif text-ink">Unit status</h2>
 
-            <div className="mt-6 space-y-3">
-              {unitStatus.map((u) => (
-                <div
-                  key={u.name}
-                  className="flex items-center justify-between gap-3"
-                >
-                  <p className="text-ink">{u.name}</p>
-                  <StatusBadge status={u.status} />
-                </div>
-              ))}
+            <div className="mt-6 overflow-x-auto">
+              <div className="min-w-[380px] space-y-3">
+                {unitStatus.map((u) => (
+                  <div
+                    key={u.name}
+                    className="flex items-center justify-between gap-6"
+                  >
+                    <p className="whitespace-nowrap text-ink">{u.name}</p>
+                    <StatusBadge status={u.status} />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -306,32 +315,36 @@ export default function DashboardPage() {
             </span>
           </div>
 
-          <div
-            className={`hidden ${COLS} gap-4 px-7 pb-3 text-xs uppercase tracking-[0.16em] text-subtle md:grid`}
-          >
-            <span>Guest</span>
-            <span>Stay</span>
-            <span>Dates</span>
-            <span>Pax</span>
-            <span>Status</span>
-          </div>
-
-          <div>
-            {upcomingBookings.map((b) => (
-              <Link
-                key={b.id}
-                href={`/dashboard/bookings/${b.id}`}
-                className={`grid grid-cols-2 gap-x-4 gap-y-1 border-t border-line px-7 py-4 transition hover:bg-sand-light ${COLS_MD} md:items-center md:gap-y-0`}
+          <div className="overflow-x-auto">
+            <div className="min-w-[640px]">
+              <div
+                className={`grid ${COLS} gap-4 px-7 pb-3 text-xs uppercase tracking-[0.16em] text-subtle`}
               >
-                <span className="font-semibold text-ink">{b.guestName}</span>
-                <span className="text-muted">{b.stay}</span>
-                <span className="text-muted">{b.dates}</span>
-                <span className="text-muted">{b.guests}</span>
-                <span className="justify-self-start">
-                  <StatusBadge status={b.status} />
-                </span>
-              </Link>
-            ))}
+                <span>Guest</span>
+                <span>Stay</span>
+                <span>Dates</span>
+                <span>Pax</span>
+                <span>Status</span>
+              </div>
+
+              {upcomingBookings.map((b) => (
+                <Link
+                  key={b.id}
+                  href={`/dashboard/bookings/${b.id}`}
+                  className={`grid ${COLS} items-center gap-4 border-t border-line px-7 py-4 transition hover:bg-sand-light`}
+                >
+                  <span className="whitespace-nowrap font-semibold text-ink">
+                    {b.guestName}
+                  </span>
+                  <span className="whitespace-nowrap text-muted">{b.stay}</span>
+                  <span className="whitespace-nowrap text-muted">{b.dates}</span>
+                  <span className="text-muted">{b.guests}</span>
+                  <span className="justify-self-start">
+                    <StatusBadge status={b.status} />
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
