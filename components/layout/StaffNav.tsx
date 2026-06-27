@@ -17,12 +17,6 @@ export default function StaffNav() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-white/80 md:flex">
-          <Link href="/dashboard" className="transition hover:text-white">
-            Dashboard
-          </Link>
-        </nav>
-
         <Link
           href="/"
           className="shrink-0 whitespace-nowrap rounded-full border border-white/30 px-3 py-1.5 text-[11px] font-semibold text-white transition hover:bg-white hover:text-ink sm:px-5 sm:py-3 sm:text-sm"
